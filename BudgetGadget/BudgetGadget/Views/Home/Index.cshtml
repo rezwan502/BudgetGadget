@@ -1,0 +1,111 @@
+﻿@model BudgetGadget.Entity.Registration
+
+@{
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+}
+
+<div class="cotn_principal">
+    <div class="title">
+        <h2>BUDGET GADGET</h2>
+    </div>
+    <div class="cont_centrar">
+        <div class="cont_login">
+            
+    <div class="cont_info_log_sign_up">
+        <div class="col_md_login">
+            <div class="cont_ba_opcitiy">
+
+                <h2>LOGIN</h2>
+                <p>Welcome To Get Access Of Your Account</p>
+                <button class="btn_login" onclick="cambiar_login()">LOGIN</button>
+            </div>
+        </div>
+        <div class="col_md_sign_up">
+
+          @if (TempData["succ"] != null)
+            {
+                <div class="alert alert-success" style="color: green;font-weight: bold;position:relative;top:10px">
+                    <strong>Account is Successfully Registered.</strong>
+                </div>
+            }
+            <p class="session" style="position:relative;top:10px;color: red;font-weight: bold;">@TempData["InvalidRegistration"]</p>
+
+
+
+            <div class="cont_ba_opcitiy">
+
+                <h2>SIGN UP</h2>
+
+                <p>Plase Sign Up To Use Budget Gadget</p>
+
+                <button class="btn_sign_up" onclick="cambiar_sign_up()">SIGN UP</button>
+            </div>
+        </div>
+    </div>
+            
+
+            <div class="cont_back_info">
+                <div class="cont_img_back_grey">
+                    <img src="https://images5.alphacoders.com/321/321859.jpg" alt="" />
+                </div>
+
+            </div>
+            <div class="cont_forms">
+                <div class="cont_img_back_">
+                    <img src="https://images5.alphacoders.com/321/321859.jpg" alt="" />
+                </div>
+                @using (Html.BeginForm("SignInCheck", "Home", FormMethod.Get))
+                {
+                    <div class="cont_form_login">
+                        <a href="#" onclick="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
+                        <h2>LOGIN</h2>
+                        
+                        @Html.EditorFor(model => model.EMail, new { htmlAttributes = new { placeholder = "Email" } })
+                        @Html.ValidationMessageFor(model => model.EMail)
+
+                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { placeholder = "Password" } })
+                        @Html.ValidationMessageFor(model => model.Password)
+                        <button class="btn_login" onclick="cambiar_login()">LOGIN</button>
+
+                    </div>
+                }
+                @using (Html.BeginForm("Create", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="cont_form_sign_up">
+                        <a href="#" onclick="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
+                        <h2>SIGN UP</h2>
+                        
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { placeholder = "Name" } })
+                            @Html.ValidationMessageFor(model => model.Name)
+                           
+                        
+                            @Html.EditorFor(model => model.EMail, new { htmlAttributes = new { placeholder = "Email" } })
+                            @Html.ValidationMessageFor(model => model.EMail)
+                           
+                        
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { placeholder = "Password" } })
+                            @Html.ValidationMessageFor(model => model.Password)
+
+
+                           @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { placeholder = "ConfirmPassword" } })
+                           @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                        
+                            @Html.TextBoxFor(model => model.Image, new { @class = "form-control", type = "file" })
+                            @Html.ValidationMessageFor(model => model.Image)
+                           
+                            <button type="submit" class="btn_sign_up">SIGN UP</button>
+                        </div>
+                }
+               
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+}

@@ -1,0 +1,450 @@
+﻿@model BudgetGadget.ViewModel.EarningExpenseViewModel
+
+
+@{
+    ViewBag.Title = "User Profile";
+    if (Session["UserId"] == null)
+    {
+        Response.Redirect("~/Home/Index");
+    }
+
+    Layout = "~/Views/Shared/_LayoutUserProfile.cshtml";
+}
+
+<div class="header-wrapper" style="display:inline">
+    <div id="ProfilePage">
+        <div id="LeftCol">
+            <div id="Photo">
+                <img src="@Url.Content(@ViewBag.Image)" />
+            </div>
+
+        </div>
+
+        <div id="Info">
+            <p>
+                <strong>Name: </strong>
+                <span>@Session["UserName"]</span>
+            </p>
+            <br />
+            <p>
+                <strong>Email:</strong>
+                <span>@Session["UserEmail"]</span>
+            </p>
+            <br />
+        </div>
+        <!-- Needed because other elements inside ProfilePage have floats -->
+        <div style="clear:both"></div>
+    </div>
+
+    <!-- Logging Out -->
+    <div class="logout" style="position:fixed;bottom:10px;
+                     right:0;">
+        <span style="font-size:25px; color:beige"><a href="@Url.Action("Logout","Home")"><i class="fas fa-sign-out-alt fa-2x" style="margin-right: -20px; margin-bottom: 5px; color:#fd7e14"></i></a></span>
+
+
+    </div>
+</div>
+<div class="main-section">
+    <div class="dashbord dashbord-blue">
+        <div class="icon-section">
+            <i class="fab fa-bitcoin" aria-hidden="true"></i><br>
+            <small style="background-color: #d9dc32;">Total Earning</small>
+            <p>@ViewBag.totalearning</p>
+        </div>
+    </div>
+    <div class="dashbord dashbord-red">
+        <div class="icon-section">
+            <i class="fa fa-money" aria-hidden="true"></i><br>
+            <small style="background-color: #E74C3C;">Total Expense</small>
+            <p>@ViewBag.totalexpense</p>
+        </div>
+    </div>
+    <div class="dashbord dashbord-green">
+        <div class="icon-section">
+            <i class="fa fa-bell" aria-hidden="true"></i><br>
+            <small style="background-color: #16A085;">Current Balance</small>
+            <p>@ViewBag.currentbalance</p>
+        </div>
+    </div>
+</div>
+<div class="DateTime">
+    <h2>Today's Date: @ViewBag.Date</h2>
+</div>
+<!-- -------------------------------------------------------------------->
+<div class="row">
+    <div class="column" style="padding-left:11%;width:400px;">
+        @using (Html.BeginForm("Earning", "Home", FormMethod.Post))
+        {
+            <div id="flip" style="width:400px;">
+                <p>
+                    <i class="fas fa-plus" style="padding-right: 5px; margin-top:5px;background:#d9dc32;"></i> Earning
+                </p>
+
+            </div>
+            <div id="panel" style="width:400px;">
+
+                @Html.EditorFor(model => model.Earning.Source, new { htmlAttributes = new { placeholder = "Source Of Money", style = "background:white;height:40px;width:250px;" } })
+                @Html.ValidationMessageFor(model => model.Earning.Source)
+                <br />
+                <br />
+
+                @Html.EditorFor(model => model.Earning.SourceAmount, new { htmlAttributes = new { placeholder = "Amount", style = "background:white;height:40px;width:250px;" } })
+                @Html.ValidationMessageFor(model => model.Earning.SourceAmount)
+                <br />
+                <br />
+                <button type="submit" class="btn btn-warning">Save</button>
+            </div>
+        }
+    </div>
+    <div class="column" style="padding-left:32%;width:400px;">
+        @using (Html.BeginForm("Expense", "Home", FormMethod.Post))
+        {
+            <div id="flipEx" style="width:400px;">
+                <p>
+                    <i class="fas fa-minus" style="padding-right: 5px; margin-top:5px;background:#e74c3c;"></i> Expense
+                </p>
+
+            </div>
+            <div id="panelEx" style="width:400px;">
+
+                @Html.EditorFor(model => model.Expense.Reason, new { htmlAttributes = new { placeholder = "Expense Reason", style = "background:white;height:40px;width:250px;" } })
+                @Html.ValidationMessageFor(model => model.Expense.Reason, null, new { style = "color:white;" })
+                <br />
+                <br />
+
+                @Html.EditorFor(model => model.Expense.ReasonAmount, new { htmlAttributes = new { placeholder = "Amount", style = "background:white;height:40px;width:250px;" } })
+                @Html.ValidationMessageFor(model => model.Expense.ReasonAmount, null, new { style = "color:white;" })
+                <br />
+                <br />
+                <button type="submit" class="btn btn-danger">Save</button>
+
+            </div>
+        }
+    </div>
+</div>
+<!-- ---------------------------------------------------------------------->
+<br />
+<br />
+<div class="DateTime">
+    <h2>History </h2>
+</div>
+<br />
+<br />
+@*
+    @{
+        int day = 0;
+        string mn;
+        string[] month = new[]{ "January",
+                                           "February",
+                                            "March","April","May","June","July","August","September","October","November","December"};
+    }
+
+    <div class="row row-history">
+        @for (int m = 1; m <= 12; m++)
+        {
+            if (m == 2)
+            {
+                day = 28;
+            }
+            else if (m % 2 == 1)
+            {
+                day = 31;
+            }
+            else
+            {
+                day = 30;
+            }
+            mn = month[m - 1];
+
+            <div class="column column-history" style="padding:10px;overflow:auto;display:inline-block">
+                <div id="@(mn)">
+                    <p>
+                        <i class="fas fa-minus" style="padding-right: 5px; margin-top:5px;background:#afafaf;"></i> @mn
+                    </p>
+                </div>
+                <div id="@(mn+"Dates")" style="padding-right: 5px; margin-top:2px;background:#afafaf;overflow:auto">
+                    @for (int i = 1; i <= day; i++)
+                    {
+                        string d = i.ToString();
+                        string ms = m.ToString();
+
+                        <a href="@Url.Action("MonthHistory", "Histories", new { id = d, months = ms })" class="dates" style="background:#ece9e9;width: 100%;margin-left: 0px;padding: 10px 10px;display: inline-block;">@i @mn</a>
+
+
+
+                    }
+                </div>
+            </div>
+
+        }
+    </div>
+
+*@
+<div class="row row-history">
+    <div class="column column-history">
+        <div id="January">
+            <p>
+                <i class="fas fa-minus" style="padding-right: 5px; margin-top:5px;background:#afafaf;"></i> January
+                <a href="@Url.Action("FullMonthHistory", "Histories", new {months = "1" })" style="margin-left: 10px;color: #118415;font-weight: bolder;">Full History</a>
+            </p>
+        </div>
+        <div id="JanuaryDates" style="padding-right: 5px; margin-top:2px;background:#afafaf;overflow:auto">
+            @for (int i = 1; i <= 31; i++)
+            {
+                string d = i.ToString();
+                string ms = "January";
+
+                <a href="@Url.Action("MonthHistory", "Histories", new { id = d, months = "1" })" style="background:#ece9e9;width: 100%;margin-left: 0px;padding: 10px 10px;display: inline-block;">@i @ms</a>
+
+
+
+            }
+        </div>
+    </div>
+    <div class="column column-history">
+        <div id="February">
+            <p>
+                <i class="fas fa-minus" style="padding-right: 5px; margin-top:5px;background:#afafaf;"></i> February
+                <a href="@Url.Action("FullMonthHistory", "Histories", new {months = "2" })" style="margin-left: 10px;color: #118415;font-weight: bolder;">Full History</a>
+            </p>
+        </div>
+        <div id="FebruaryDates" style="padding-right: 5px; margin-top:2px;background:#afafaf;overflow:auto">
+            @for (int i = 1; i <= 28; i++)
+            {
+                string d = i.ToString();
+                string ms = "February";
+
+                <a href="@Url.Action("MonthHistory", "Histories", new { id = d, months = "2" })" style="background:#ece9e9;width: 100%;margin-left: 0px;padding: 10px 10px;display: inline-block;">@i @ms</a>
+
+
+
+            }
+        </div>
+    </div>
+    <div class="column column-history">
+        <div id="March">
+            <p>
+                <i class="fas fa-minus" style="padding-right: 5px; margin-top:5px;background:#afafaf;"></i> March
+                <a href="@Url.Action("FullMonthHistory", "Histories", new {months = "3" })" style="margin-left: 10px;color: #118415;font-weight: bolder;">Full History</a>
+            </p>
+        </div>
+        <div id="MarchDates" style="padding-right: 5px; margin-top:2px;background:#afafaf;overflow:auto">
+            @for (int i = 1; i <= 31; i++)
+            {
+                string d = i.ToString();
+                string ms = "March";
+
+                <a href="@Url.Action("MonthHistory", "Histories", new { id = d, months = "3" })" style="background:#ece9e9;width: 100%;margin-left: 0px;padding: 10px 10px;display: inline-block;">@i @ms</a>
+
+
+
+            }
+        </div>
+    </div>
+</div>
+<br />
+<div class="row row-history">
+    <div class="column column-history">
+        <div id="April">
+            <p>
+                <i class="fas fa-minus" style="padding-right: 5px; margin-top:5px;background:#afafaf;"></i> April
+                <a href="@Url.Action("FullMonthHistory", "Histories", new {months = "4" })" style="margin-left: 10px;color: #118415;font-weight: bolder;">Full History</a>
+            </p>
+        </div>
+        <div id="AprilDates" style="padding-right: 5px; margin-top:2px;background:#afafaf;overflow:auto">
+            @for (int i = 1; i <= 31; i++)
+            {
+                string d = i.ToString();
+                string ms = "April";
+
+                <a href="@Url.Action("MonthHistory", "Histories", new { id = d, months = "4" })" class="dates" style="background:#ece9e9;width: 100%;margin-left: 0px;padding: 10px 10px;display: inline-block;">@i @ms</a>
+
+
+
+            }
+        </div>
+    </div>
+    <div class="column column-history">
+        <div id="May">
+            <p>
+                <i class="fas fa-minus" style="padding-right: 5px; margin-top:5px;background:#afafaf;"></i> May
+                <a href="@Url.Action("FullMonthHistory", "Histories", new {months = "5" })" style="margin-left: 10px;color: #118415;font-weight: bolder;">Full History</a>
+            </p>
+        </div>
+        <div id="MayDates" style="padding-right: 5px; margin-top:2px;background:#afafaf;overflow:auto">
+            @for (int i = 1; i <= 31; i++)
+            {
+                string d = i.ToString();
+                string ms = "May";
+
+                <a href="@Url.Action("MonthHistory", "Histories", new { id = d, months = "5" })" class="dates" style="background:#ece9e9;width: 100%;margin-left: 0px;padding: 10px 10px;display: inline-block;">@i @ms</a>
+
+
+
+            }
+        </div>
+    </div>
+    <div class="column column-history">
+        <div id="June">
+            <p>
+                <i class="fas fa-minus" style="padding-right: 5px; margin-top:5px;background:#afafaf;"></i> June
+                <a href="@Url.Action("FullMonthHistory", "Histories", new {months = "6" })" style="margin-left: 10px;color: #118415;font-weight: bolder;">Full History</a>
+            </p>
+        </div>
+        <div id="JuneDates" style="padding-right: 5px; margin-top:2px;background:#afafaf;overflow:auto">
+            @for (int i = 1; i <= 31; i++)
+            {
+                string d = i.ToString();
+                string ms = "June";
+
+                <a href="@Url.Action("MonthHistory", "Histories", new { id = d, months = "6" })" class="dates" style="background:#ece9e9;width: 100%;margin-left: 0px;padding: 10px 10px;display: inline-block;">@i @ms</a>
+
+
+
+            }
+        </div>
+    </div>
+</div>
+<br />
+<div class="row row-history">
+    <div class="column column-history">
+        <div id="July">
+            <p>
+                <i class="fas fa-minus" style="padding-right: 5px; margin-top:5px;background:#afafaf;"></i> July
+                <a href="@Url.Action("FullMonthHistory", "Histories", new {months = "7" })" style="margin-left: 10px;color: #118415;font-weight: bolder;">Full History</a>
+            </p>
+        </div>
+        <div id="JulyDates" style="padding-right: 5px; margin-top:2px;background:#afafaf;overflow:auto">
+            @for (int i = 1; i <= 31; i++)
+            {
+                string d = i.ToString();
+                string ms = "July";
+
+                <a href="@Url.Action("MonthHistory", "Histories", new { id = d, months = "7" })" class="dates" style="background:#ece9e9;width: 100%;margin-left: 0px;padding: 10px 10px;display: inline-block;">@i @ms</a>
+
+
+
+            }
+        </div>
+    </div>
+    <div class="column column-history">
+        <div id="August">
+            <p>
+                <i class="fas fa-minus" style="padding-right: 5px; margin-top:5px;background:#afafaf;"></i> August
+                <a href="@Url.Action("FullMonthHistory", "Histories", new {months = "8" })" style="margin-left: 10px;color: #118415;font-weight: bolder;">Full History</a>
+            </p>
+        </div>
+        <div id="AugustDates" style="padding-right: 5px; margin-top:2px;background:#afafaf;overflow:auto">
+            @for (int i = 1; i <= 31; i++)
+            {
+                string d = i.ToString();
+                string ms = "August";
+
+                <a href="@Url.Action("MonthHistory", "Histories", new { id = d, months = "8" })" class="dates" style="background:#ece9e9;width: 100%;margin-left: 0px;padding: 10px 10px;display: inline-block;">@i @ms</a>
+
+
+
+            }
+        </div>
+    </div>
+
+    <div class="column column-history">
+        <div id="September">
+            <p>
+                <i class="fas fa-minus" style="padding-right: 5px; margin-top:5px;background:#afafaf;"></i> September
+                <a href="@Url.Action("FullMonthHistory", "Histories", new {months = "9" })" style="margin-left: 10px;color: #118415;font-weight: bolder;">Full History</a>
+            </p>
+        </div>
+        <div id="SeptemberDates" style="padding-right: 5px; margin-top:2px;background:#afafaf;overflow:auto">
+            @for (int i = 1; i <= 31; i++)
+            {
+                string d = i.ToString();
+                string ms = "September";
+
+                <a href="@Url.Action("MonthHistory", "Histories", new { id = d, months = "9" })" class="dates" style="background:#ece9e9;width: 100%;margin-left: 0px;padding: 10px 10px;display: inline-block;">@i @ms</a>
+
+
+
+            }
+        </div>
+    </div>
+</div>
+<br />
+<div class="row row-history">
+    <div class="column column-history">
+        <div id="October">
+            <p>
+                <i class="fas fa-minus" style="padding-right: 5px; margin-top:5px;background:#afafaf;"></i> October
+                <a href="@Url.Action("FullMonthHistory", "Histories", new {months = "10" })" style="margin-left: 10px;color: #118415;font-weight: bolder;">Full History</a>
+            </p>
+        </div>
+        <div id="OctoberDates" style="padding-right: 5px; margin-top:2px;background:#afafaf;overflow:auto">
+            @for (int i = 1; i <= 31; i++)
+            {
+                string d = i.ToString();
+                string ms = "October";
+
+                <a href="@Url.Action("MonthHistory", "Histories", new { id = d, months = "10" })" class="dates" style="background:#ece9e9;width: 100%;margin-left: 0px;padding: 10px 10px;display: inline-block;">@i @ms</a>
+
+
+
+            }
+        </div>
+    </div>
+    <div class="column column-history">
+        <div id="November">
+            <p>
+                <i class="fas fa-minus" style="padding-right: 5px; margin-top:5px;background:#afafaf;"></i> November
+                <a href="@Url.Action("FullMonthHistory", "Histories", new { months = "11" })" style="margin-left: 10px;color: #118415;font-weight: bolder;">Full History</a>
+            </p>
+        </div>
+        <div id="NovemberDates" style="padding-right: 5px; margin-top:2px;background:#afafaf;overflow:auto">
+            @for (int i = 1; i <= 31; i++)
+            {
+                string d = i.ToString();
+                string ms = "November";
+
+                <a href="@Url.Action("MonthHistory", "Histories", new { id = d, months = "11" })" class="dates" style="background:#ece9e9;width: 100%;margin-left: 0px;padding: 10px 10px;display: inline-block;">@i @ms</a>
+
+
+
+            }
+        </div>
+    </div>
+
+    <div class="column column-history">
+        <div id="December">
+            <p>
+                <i class="fas fa-minus" style="padding-right: 5px; margin-top:5px;background:#afafaf;"></i> December
+                <a href="@Url.Action("FullMonthHistory", "Histories", new { months = "12" })" style="margin-left: 10px;color: #118415;font-weight: bolder;">Full History</a>
+            </p>
+        </div>
+        <div id="DecemberDates" style="padding-right: 5px; margin-top:2px;background:#afafaf;overflow:auto">
+            @for (int i = 1; i <= 31; i++)
+            {
+                string d = i.ToString();
+                string ms = "December";
+
+                <a href="@Url.Action("MonthHistory", "Histories", new { id = d, months = "12" })" class="dates" style="background:#ece9e9;width: 100%;margin-left: 0px;padding: 10px 10px;display: inline-block;">@i @ms</a>
+
+
+
+            }
+        </div>
+    </div>
+    <p style="padding:50px 50px"></p>
+</div>
+
+
+@section scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+}
+<style>
+    a:hover {
+        color: red;
+        font-weight: 700;
+    }
+</style>

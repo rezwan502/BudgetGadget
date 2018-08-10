@@ -1,0 +1,331 @@
+body {
+    background: #3c5c62;
+}
+
+* {
+
+    margin: 0px auto;
+    padding: 0px;
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+
+}
+
+#ProfilePage {
+    background: #1b424a;
+    /* Move it off the top of the page, then centre it horizontally */
+    margin: 50px auto;
+    width: 635px;
+
+    /* For visibility. Delete me */
+    border: 1px solid white;
+
+}
+
+#LeftCol {
+    /* Move it to the left */
+    float: left;
+
+    width: 200px;
+    text-align: center;
+
+    /* Move it away from the content */
+    margin-right: 20px;
+
+    /* For visibility. Delete me 
+        border: 1px solid brown;
+        */
+}
+
+#Photo {
+    /* Width and height of photo container */
+    width: 200px;
+    height: 200px;
+
+    /* For visibility. Delete me 
+        border: 3px solid green
+            */
+}
+
+#Photo img {
+    width: 200px;
+    height: 200px;
+}
+
+#Info {
+    width: 400px;
+    text-align: center;
+    margin-top: 50px;
+    /* Move it to the right */
+    float: right;
+    /* For visibility. Delete me */
+    background: #1b424af2;
+}
+
+#Info strong {
+    /* Give it a width */
+    display: inline-block;
+    width: 120px;
+    color: white;
+    /* For visibility. Delete me 
+        border: 1px solid orange;*/
+    background: #1b424af2;
+}
+
+#Info span {
+    /* Give it a width */
+    display: inline-block;
+    width: 250px;
+    color: white;
+    background: #1b424af2;
+    /* For visibility. Delete me 
+        border: 1px solid purple;
+        */
+}
+
+#Info p {
+    background: #1b424af2;
+}
+
+.logout {
+    display: inline-block;
+    float: right;
+    text-align: center;
+    margin-top: -15%;
+    /* Move it away from the content */
+    margin-right: 50px;
+}
+
+/* DashBoard */
+
+.main-section {
+    background: #3c5c62;
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 0px 5px;
+}
+
+.dashbord {
+    width: 32%;
+    display: inline-block;
+    background-color: #34495E;
+    color: #fff;
+    margin-top: 50px;
+}
+
+.icon-section i {
+    font-size: 30px;
+    padding: 10px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    margin-top: -25px;
+    margin-bottom: 10px;
+
+}
+
+.icon-section p {
+    margin: 0px;
+    font-size: 20px;
+    padding-bottom: 10px;
+    padding-top: 5px;
+}
+
+.detail-section {
+    background-color: #2F4254;
+    padding: 5px 0px;
+}
+
+.dashbord .detail-section:hover {
+    background-color: #5a5a5a;
+    cursor: pointer;
+}
+
+.detail-section a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.dashbord-green .icon-section,
+.dashbord-green .icon-section i {
+    background-color: #16A085;
+}
+
+.dashbord-green .detail-section {
+    background-color: #149077;
+}
+
+.dashbord-orange .icon-section,
+.dashbord-orange .icon-section i {
+    background-color: #F39C12;
+}
+
+.dashbord-orange .detail-section {
+    background-color: #DA8C10;
+}
+
+.dashbord-blue .icon-section,
+.dashbord-blue .icon-section i {
+    background-color: #d9dc32;
+}
+
+.dashbord-blue .detail-section {
+    background-color: #d9dc32;
+}
+
+.dashbord-red .icon-section,
+.dashbord-red .icon-section i {
+    background-color: #E74C3C;
+}
+
+.dashbord-red .detail-section {
+    background-color: #CF4436;
+}
+
+.dashbord-skyblue .icon-section,
+.dashbord-skyblue .icon-section i {
+    background-color: #8E44AD;
+}
+
+.dashbord-skyblue .detail-section {
+    background-color: #803D9B;
+}
+
+/* Time */
+
+.DateTime {
+    text-align: center;
+    color: #c0dada;
+    padding: 25px 10px;
+}
+
+/* DropDown */
+
+#panel,
+#flip {
+    margin-left: 15%;
+    width: 350px;
+    height: 30px;
+    text-align: center;
+    background-color: #d9dc32;
+
+}
+
+#flip p {
+    color: white;
+    background: #d9dc32;
+}
+
+#panel {
+    height: 160px;
+    display: none;
+}
+
+#panelEx,
+#flipEx {
+    margin-left: 55%;
+    width: 350px;
+    height: 30px;
+    text-align: center;
+    background-color: #e74c3c;
+
+}
+
+#flipEx p {
+    color: white;
+    background: #e74c3c;
+}
+
+#panelEx {
+    height: 160px;
+    display: none;
+}
+
+.row {
+    width: 80%;
+
+}
+
+.column {
+    float: left;
+    width: 33%;
+    padding-left: 10%;
+
+}
+
+/* History */
+
+.row-history {
+    width: 90%;
+    padding-left: 15px;
+
+}
+
+.column-history {
+    float: left;
+    padding-left: 10%;
+
+}
+
+#JanuaryDates,
+#FebruaryDates,
+#MarchDates,
+#AprilDates,
+#MayDates,
+#JuneDates,
+#JulyDates,
+#AugustDates,
+#SeptemberDates,
+#OctoberDates,
+#NovemberDates,
+#DecemberDates,
+#January,
+#February,
+#March,
+#April,
+#May,
+#June,
+#July,
+#August,
+#September,
+#October,
+#November,
+#December {
+    width: 350px;
+    height: 30px;
+    text-align: center;
+    background-color: #afafaf;
+
+}
+
+#January p,
+#February p,
+#March p,
+#April p,
+#May p,
+#June p,
+#July p,
+#August p,
+#September p,
+#October p,
+#November p,
+#December p {
+    color: firebrick;
+    background: #afafaf;
+}
+
+#JanuaryDates,
+#FebruaryDates,
+#MarchDates,
+#AprilDates,
+#MayDates,
+#JuneDates,
+#JulyDates,
+#AugustDates,
+#SeptemberDates,
+#OctoberDates,
+#NovemberDates,
+#DecemberDates {
+    height: 160px;
+    display: none;
+}

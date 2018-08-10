@@ -1,0 +1,238 @@
+﻿@model BudgetGadget.ViewModel.HistoryViewModel
+
+@{
+    if (Session["UserId"] == null)
+    {
+        Response.Redirect("~/Home/Index");
+    }
+
+    Layout = "~/Views/Shared/_LayoutHistory.cshtml";
+}
+@*
+    <h2>Index</h2>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+
+    @Session["UserId"]
+    <div class="tab" style="display:inline-block; text-align:center">
+        <table class="table" style="padding-top:20px;">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Source)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
+
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.Earning)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => item.Source)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SourceAmount)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "EditEarning", new { id = item.Id })
+                        @Html.ActionLink("Delete", "DeleteEarning", new { id = item.Id })
+                    </td>
+
+                </tr>
+            }
+
+        </table>
+
+
+        <table class="table" style="padding-top:20px;">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Reason)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
+
+                <th></th>
+            </tr>
+
+
+
+            @foreach (var item in Model.Expense)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => item.Reason)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReasonAmount)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "EditExpense", new { id = item.Id })
+                        @Html.ActionLink("Delete", "DeleteExpense", new { id = item.Id })
+                    </td>
+
+                </tr>
+            }
+
+        </table>
+    </div>
+    <a href="@Url.Action("Logout","Home")">Logout</a>
+
+    @Html.ActionLink("User Profile","UserProfile","Home")
+*@
+
+
+
+<h2 style="color: #c0dada;margin-top:50px;"> History: @ViewBag.Date @ViewBag.Month @ViewBag.Year </h2>
+@Html.ActionLink("User Profile", "UserProfile", "Home", null, new { @class = "btn btn-primary", @style = "padding:10px 50px; margin-left:-75%;font-size:20px; background-color:#176367" })
+
+<div class="row">
+    <div class="column">
+        <table id="historyEarning">
+            <tr>
+                <th style="width:100%; background: #d9dc32">
+                    Earning Source
+                </th>
+                <th style="width:100%; background: #d9dc32">
+                    Amount
+                </th>
+                <th style="width:100%; background: #d9dc32; padding:18px 47px;">
+                    Action
+                </th>
+            </tr>
+
+            @{
+                string str = null;
+                string sc = null;
+            }
+
+            @foreach (var item in Model.Earning)
+            {
+                <tr>
+                    @if (ViewBag.DateMonth != null)
+                    {
+                        str = item.Date + " / " + item.Month + " ";
+                        sc = item.Source;
+                    }
+                    <td>
+                       
+                        <div style="text-align:left">
+                            @str
+                        <p style="display:inline;padding-left:100px">@Html.DisplayFor(modelItem => item.Source)</p>
+                    </div>         
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SourceAmount)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "EditEarning", new { id = item.Id }, new { @class = "btn btn-primary" })
+                       
+
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#@item.Id" data-whatever="">Delete</button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        Are You Sure to delete this history?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        @Html.ActionLink("Delete", "DeleteEarning", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+
+                </tr>
+            }
+            <tr>
+                <td style="color:red;background-color:white">
+                    Total
+                </td>
+                <td style="color:red;background-color:white">
+                    @ViewBag.totalearning
+                </td>
+                <td style="color:red;background-color:white"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="column">
+        <table id="historyExpense">
+            <tr>
+                <th style="width:100%;background:  #CF4436;">
+                    Expense Reason
+                </th>
+                <th style="width:100%;background:  #CF4436;">
+                    Amount
+                </th>
+                <th style="width:100%;background:  #CF4436;padding:18px 47px;">
+                    Action
+                </th>
+            </tr>
+            @foreach (var item in Model.Expense)
+            {
+                <tr>
+                    @if (ViewBag.DateMonth != null)
+                    {
+                        str = item.Date + " / " + item.Month + " ";
+                        sc = item.Reason;
+                    }
+                    <td>
+
+                        <div style="text-align:left">
+                            @str
+                            <p style="display:inline;padding-left:100px">@Html.DisplayFor(modelItem => item.Reason)</p>
+                        </div>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReasonAmount)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "EditExpense", new { id = item.Id }, new { @class = "btn btn-primary" })
+                       
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#@item.Id">
+                            Delete
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        Are You Sure to delete this history?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        @Html.ActionLink("Delete", "DeleteExpense", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+
+                </tr>
+            }
+            <tr>
+                <td style="color:red;background-color:white">
+                    Total
+                </td>
+                <td style="color:red;background-color:white">
+                    @ViewBag.totalexpense
+                </td>
+                <td style="color:red;background-color:white"></td>
+            </tr>
+        </table>
+    </div>
+</div>
